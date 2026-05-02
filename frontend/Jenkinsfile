@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Install') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Start App') {
+            steps {
+                sh 'npm run dev &'
+                sh 'sleep 10'
+            }
+        }
+
+        stage('Run Cypress Tests') {
+            steps {
+                sh 'npx cypress run --spec "cypress/e2e/features/**/*.feature"'
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
+                publishHTML([
+                    reportDir:   'cypress/reports',
+                    reportFiles: 'index.html',
+                    reportName:  'Cypress Test Report'
+                ])
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts 'cypress/screenshots/**/*.png'
+        }
+        success {
+            echo 'Tous les tests sont PASSED ✅'
+        }
+        failure {
+            echo 'Des tests ont FAILED ❌'
+        }
+    }
+}
