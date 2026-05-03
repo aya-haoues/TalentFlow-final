@@ -17,6 +17,7 @@ import SocialCallback  from './pages/SocialCallback';
 import JobsPage        from './pages/JobsPage';
 import JobDetailPage   from './pages/JobDetailPage';
 import ApplyJobPage    from './pages/ApplyJobPage';
+import ManagerDashboard    from './pages/manager/ManagerDashboard';
 
 // ── Pages candidat ───────────────────────────────────────
 import CandidatDashboard from './pages/candidat/CandidatDashboard';
@@ -104,6 +105,22 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
 }
 
+// Après AdminRoute et avant const App
+function ManagerRoute({ children }: { children: React.ReactNode }) {
+    const user = authService.getCurrentUser();
+
+    if (!authService.isAuthenticated()) {
+        return <Navigate to="/login" replace />;
+    }
+    if (user && !user.email_verified) {
+        return <Navigate to="/verify-email" replace />;
+    }
+    if (user?.role !== 'manager') {
+        return <Navigate to="/" replace />;
+    }
+    return <>{children}</>;
+}
+
 /* ══════════════════════════════════════════════════════════
     APP
 ══════════════════════════════════════════════════════════ */
@@ -167,6 +184,7 @@ const App: React.FC = () => {
 <Route path="/rh/settings" element={<RhSettings />} />
 <Route path="/rh/settings/:tab" element={<RhSettings />} />
 
+                    <Route path="/manager/dashboard" element={<ManagerRoute><ManagerDashboard /></ManagerRoute>} />
 
 
                     <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />

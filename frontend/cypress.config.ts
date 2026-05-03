@@ -4,16 +4,23 @@ import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-prepro
 import { createEsbuildPlugin } from '@badeball/cypress-cucumber-preprocessor/esbuild'
 
 export default defineConfig({
-    e2e: {
-        baseUrl: 'http://localhost:5173',
-        specPattern: 'cypress/e2e/features/**/*.feature',
-        blockHosts: ["*.tawk.to"],    // Bloque le chargement du widget de chat pendant les tests
-        async setupNodeEvents(on, config) {
-            await addCucumberPreprocessorPlugin(on, config)
-            on('file:preprocessor', createBundler({
-                plugins: [createEsbuildPlugin(config)],
-            }))
-            return config
-        },
+  e2e: {
+    baseUrl: 'http://localhost:5173',
+    specPattern: 'cypress/e2e/features/**/*.feature',
+    blockHosts: ["*.tawk.to"],
+
+    // ← Ajouter
+    reporter: 'json',
+    reporterOptions: {
+      output: 'cypress/reports/candidature.json'
     },
+
+    async setupNodeEvents(on, config) {
+      await addCucumberPreprocessorPlugin(on, config)
+      on('file:preprocessor', createBundler({
+        plugins: [createEsbuildPlugin(config)],
+      }))
+      return config
+    },
+  },
 })

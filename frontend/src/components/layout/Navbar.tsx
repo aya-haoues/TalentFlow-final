@@ -21,7 +21,7 @@ const DASHBOARD_ROUTES: Record<UserRole, string> = {
   candidat: '/candidat/dashboard',
   rh:       '/rh/dashboard',
   admin:    '/admin/dashboard',
-  manager: ''
+  manager: '/manager/dashboard'
 
 };
 
@@ -29,7 +29,7 @@ const DASHBOARD_LABELS: Record<UserRole, string> = {
   candidat: 'Mon espace',
   rh:       'Tableau de bord RH',
   admin:    'Administration',
-  manager: ''
+  manager: 'Tableau de bord Manager'
 
 };
 

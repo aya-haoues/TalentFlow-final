@@ -46,8 +46,15 @@
     "typescript-eslint": "^8.48.0",
     "vite": "^7.3.1"
   },
+  
+  
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": false,
-    "stepDefinitions": "cypress/e2e/step_definitions/**/*.steps.ts"
-  }
+    "stepDefinitions": "cypress/e2e/step_definitions/**/*.steps.ts",
+    "json": {
+      "enabled": true,
+      "output": "cypress/reports/candidature.json"
+    }
+  
+}
 }
